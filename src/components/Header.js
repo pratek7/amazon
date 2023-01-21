@@ -5,13 +5,13 @@ import {
   ShoppingCartIcon,
 } from "@heroicons/react/outline";
 
-import { signIn, signOut, useSession } from "next-auth/client";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { selectItems } from "../redux/reduser";
+import { selectItems } from "../app/store";
 
 const Header = () => {
-  const [session] = useSession();
+  const {data: session} = useSession();
   const router = useRouter();
   const items = useSelector(selectItems);
   return (
