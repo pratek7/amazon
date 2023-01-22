@@ -24,8 +24,6 @@ const Header = () => {
             height={40}
             width={150}
             style={{
-              width: "auto",
-              height: "auto",
               objectFit: "contain",
             }}
             className="cursor-pointer"
