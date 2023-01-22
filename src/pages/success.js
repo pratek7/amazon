@@ -14,11 +14,10 @@ function Sucess() {
             <h1 className="text-3xl">Thank you, You'r order has Placed</h1>
           </div>
           <p>
-            “You're the best.” “I'm humbled and grateful.” “You knocked me off
-            my feet!” “My heart is still smiling.” “Your thoughtfulness is a
-            gift I will always treasure.” “Sometimes the simplest things mean
-            the most.” “The banana bread was fabulous. You made my day.” “I'm
-            touched beyond words.”
+            Thank you for choosing to shop with us! Your support means a lot to
+            us and we are grateful for the opportunity to serve you. We hope you
+            had a great shopping experience and we look forward to welcoming you
+            back soon.
           </p>
           <button onClick={() => router.push("/order")} className="button mt-8">
             Go To MY Order
