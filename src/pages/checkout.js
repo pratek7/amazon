@@ -1,11 +1,11 @@
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import CheckoutProduct from "../components/CheckoutProduct";
 import Currency from "react-currency-formatter";
 import Header from "../components/Header";
-import { selectItems, selectItemsTotalPrice } from "../redux/reduser";
+import { selectItems, selectItemsTotalPrice } from "../slices/basketSlice";
 
 import { loadStripe } from "@stripe/stripe-js"; // stripe plugin
 
@@ -14,7 +14,7 @@ const stripPromise = loadStripe(process.env.stripe_public_key);
 const Checkout = () => {
   const items = useSelector(selectItems);
   const itemTotalPrice = useSelector(selectItemsTotalPrice);
-  const [session] = useSession();
+  const { data: session } = useSession();
   const createCheckout = async () => {
     const stripe = await stripPromise;
     const checkoutSession = await axios.post("/api/create-checkout-session", {
@@ -36,7 +36,12 @@ const Checkout = () => {
             src="https://links.papareact.com/ikj"
             width={1020}
             height={250}
-            objectFit="contain"
+            style={{
+              width: "auto",
+              height: "auto",
+              objectFit: "contain",
+            }}
+            alt="ok"
           />
           <div className="flex p-5 flex-col space-y-10 bg-white">
             <h1 className="text-3xl border-b pb-4">
@@ -45,7 +50,17 @@ const Checkout = () => {
                 : "Your Shopping Basket"}
             </h1>
             {items.map((item, index) => (
-              <CheckoutProduct key={index} Product={item} />
+              <CheckoutProduct
+                key={index}
+                id={item.id}
+                title={item.title}
+                description={item.description}
+                price={item.price}
+                image={item.image}
+                category={item.category}
+                hasPrime={item.hasPrime}
+                rating={item.rating}
+              />
             ))}
           </div>
         </div>

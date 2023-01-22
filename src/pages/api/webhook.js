@@ -1,7 +1,7 @@
 import { buffer } from "micro";
 import * as admin from "firebase-admin";
 
-const serviceAccount = require("../../../firebaseAdmin.json");
+const serviceAccount = require("../../../permission.json");
 
 const app = !admin.apps.length
   ? admin.initializeApp({
@@ -11,7 +11,7 @@ const app = !admin.apps.length
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-const key = process.env.STRIPE_SIGNING_SECRET;
+const endpointsecret = process.env.STRIPE_SIGNING_SECRET;
 
 const fullfillOrder = async (session) => {
   return await app
@@ -26,11 +26,8 @@ const fullfillOrder = async (session) => {
       images: JSON.parse(session.metadata.images),
       timestamp: admin.firestore.FieldValue.serverTimestamp(),
     })
-    .then((result) => {
+    .then(() => {
       console.log("success and add database", session.id);
-    })
-    .catch((err) => {
-      console.log(err);
     });
 };
 
@@ -41,7 +38,7 @@ export default async (req, res) => {
     const sig = req.headers["stripe-signature"];
     let event;
     try {
-      event = stripe.webhooks.constructEvent(payload, sig, key);
+      event = stripe.webhooks.constructEvent(payload, sig, endpointsecret);
     } catch (err) {
       console.log(err);
       return res.status(400).send("webhook error" + err.message);
@@ -49,15 +46,9 @@ export default async (req, res) => {
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-      console.log(event, "event");
-      console.log(event.data, "event");
-      return fullfillOrder(session)
-        .then(() => {
-          res.status(200).send("sucess");
-        })
-        .catch((err) => {
-          res.status(400).send("errr", err.message);
-        });
+      return fullfillOrder(session).then(() => {
+        res.status(200).send("sucess");
+      });
     }
   }
 };

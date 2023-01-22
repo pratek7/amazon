@@ -1,18 +1,27 @@
 import { StarIcon } from "@heroicons/react/solid";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
-import { addToBasket } from "../app/store";
+import { addToBasket } from "../slices/basketSlice";
+const max_rating = 1;
+const min_rating = 5;
+const Product = ({ id, title, description, price, image, category }) => {
+  const [rating, setRating] = useState(0);
 
-const Product = ({ Products }) => {
-  const { id, title, description, price, image, category } = Products;
-  const [rating] = useState(Math.floor(Math.random() * 5) + 1);
-  const [hasPrime] = useState(Math.random() < 0.5);
+  const [hasPrime, setIsPrimeEnabled] = useState(0);
+
+  useEffect(() => {
+    setRating(
+      Math.floor(Math.random() * (max_rating - min_rating + 1)) + min_rating
+    );
+    setIsPrimeEnabled(Math.random() < 0.5);
+  }, []);
   const dispath = useDispatch();
-  Products = { ...Products, rating, hasPrime };
+
   const addItemToBasket = () => {
-    dispath(addToBasket(Products));
+    const product = { id, title, description, price, image, category };
+    dispath(addToBasket(product));
   };
   return (
     <div className="relative flex flex-col m-5 bg-white z-30 p-10 hover:shadow-lg hover:scale-105 transform hover:rounded-t-lg">
@@ -21,10 +30,12 @@ const Product = ({ Products }) => {
       </p>
       <Image
         src={image}
-        alt={title}
+        alt="ok"
         height={200}
         width={200}
-        objectFit="contain"
+        style={{
+          objectFit: "contain",
+        }}
         className="cursor-pointer hover:scale-105 transform "
       />
       <h4 className="my-3">{title}</h4>

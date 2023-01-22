@@ -8,21 +8,26 @@ import {
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
-import { selectItems } from "../app/store";
+import { selectItems } from "../slices/basketSlice";
 
 const Header = () => {
-  const {data: session} = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
-  const items = useSelector(selectItems);
+  const item = useSelector(selectItems);
   return (
     <header className="sticky top-0 z-50">
       <div className="flex items-center bg-amazon_blue p-1 flex-grow py-2">
         <div className="mt-2 flex items-center flex-grow sm:flex-grow-0">
           <Image
             src=" https://links.papareact.com/f90"
+            alt="ok"
             height={40}
             width={150}
-            objectFit="contain"
+            style={{
+              width: "auto",
+              height: "auto",
+              objectFit: "contain",
+            }}
             className="cursor-pointer"
             onClick={() => router.push("/")}
           />
@@ -53,7 +58,7 @@ const Header = () => {
             className="link relative flex items-center"
           >
             <span className="absolute top-0 right-0 md:right-10 h-4 w-4 bg-yellow-400 text-center rounded-full text-black font-bold">
-              {items.length}
+              {item.length}
             </span>
             <ShoppingCartIcon className="h-10" />
             <p className=" hidden font-extrabold md:text-sm md:inline mt-2">

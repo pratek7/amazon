@@ -2,25 +2,35 @@ import { StarIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
-import checkout from "../payments/Khalti";
 
-import { removeFromBasket } from "../redux/reduser";
+import { removeFromBasket } from "../slices/basketSlice";
 
-const CheckoutProduct = ({ Product }) => {
-  const { id, title, description, price, image, category, hasPrime, rating } =
-    Product;
+const CheckoutProduct = ({
+  id,
+  title,
+  description,
+  price,
+  image,
+  hasPrime,
+  rating,
+}) => {
   const dispath = useDispatch();
   const removeItemFromBasket = () => {
     dispath(removeFromBasket({ id }));
   };
+  console.log(title);
   return (
     <div className=" grid grid-cols-5">
       <Image
         src={image}
-        alt={title}
+        alt="ok"
         height={200}
         width={200}
-        objectFit="contain"
+        style={{
+          width: "auto",
+          height: "auto",
+          objectFit: "contain",
+        }}
       />
       <div className="col-span-3 mx-5">
         <p>{title}</p>
@@ -28,7 +38,7 @@ const CheckoutProduct = ({ Product }) => {
           {Array(rating)
             .fill()
             .map((_, i) => (
-              <StarIcon key={id} className="h-5 text-yellow-500" />
+              <StarIcon key={i} className="h-5 text-yellow-500" />
             ))}
         </div>
         <p className="text-xs my-2 line-clamp-3">{description}</p>

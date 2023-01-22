@@ -1,11 +1,11 @@
-import { getSession, useSession } from "next-auth/client";
+import { getSession, useSession } from "next-auth/react";
 import db from "../../firebase";
 import Header from "../components/Header";
 import moment from "moment";
 import OrderItem from "../components/OrderItem";
 
 const Order = ({ orders }) => {
-  const {data: session} = useSession();
+  const { data: session } = useSession();
   return (
     <div className="">
       <Header />
@@ -19,9 +19,18 @@ const Order = ({ orders }) => {
           <h2>Singin To See Orders</h2>
         )}
         <div className="mt-5 space-y-4">
-          {orders?.map((order) => (
-            <OrderItem key={order.id} order={order} />
-          ))}
+          {orders?.map(
+            ({ id, amount, amount_shipping, items, image, timestamp }) => (
+              <OrderItem
+                id={id}
+                amount={amount}
+                amount_shipping={amount_shipping}
+                items={items}
+                image={image}
+                timestamp={timestamp}
+              />
+            )
+          )}
         </div>
       </main>
     </div>
