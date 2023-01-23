@@ -14,7 +14,7 @@ const Order = ({ orders }) => {
           Your Order
         </h1>
         {session ? (
-          <h2>{orders.length}Orders</h2>
+          <h2>{orders.length} Orders</h2>
         ) : (
           <h2>Singin To See Orders</h2>
         )}

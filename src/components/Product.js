@@ -4,6 +4,12 @@ import { useState, useEffect } from "react";
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
 import { addToBasket } from "../slices/basketSlice";
+import { loadStripe } from "@stripe/stripe-js"; // stripe plugin
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectItems } from "../slices/basketSlice";
+import { useSession } from "next-auth/react";
+const stripPromise = loadStripe(process.env.stripe_public_key);
 const max_rating = 1;
 const min_rating = 5;
 const Product = ({ id, title, description, price, image, category }) => {
@@ -22,6 +28,20 @@ const Product = ({ id, title, description, price, image, category }) => {
   const addItemToBasket = () => {
     const product = { id, title, description, price, image, category };
     dispath(addToBasket(product));
+  };
+  const { data: session } = useSession();
+  const items = useSelector(selectItems);
+  const createCheckout = async () => {
+    const stripe = await stripPromise;
+    const checkoutSession = await axios.post("/api/create-checkout-session", {
+      items,
+      email: session.user.email,
+    });
+    //redirect to payment info
+    const result = await stripe.redirectToCheckout({
+      sessionId: checkoutSession.data.session.id,
+    });
+    if (result.error) alert(result.error.message);
   };
   return (
     <div className="relative flex flex-col m-5 bg-white z-30 p-10 hover:shadow-lg hover:scale-105 transform hover:rounded-t-lg">

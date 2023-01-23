@@ -2,9 +2,7 @@ import { StarIcon } from "@heroicons/react/solid";
 import Image from "next/image";
 import Currency from "react-currency-formatter";
 import { useDispatch } from "react-redux";
-
 import { removeFromBasket } from "../slices/basketSlice";
-
 const CheckoutProduct = ({
   id,
   title,
@@ -18,7 +16,7 @@ const CheckoutProduct = ({
   const removeItemFromBasket = () => {
     dispath(removeFromBasket({ id }));
   };
-  console.log(title);
+
   return (
     <div className=" grid grid-cols-5">
       <Image
@@ -56,12 +54,6 @@ const CheckoutProduct = ({
         )}
       </div>
       <div className="flex flex-col space-y-2 my-auto justify-self-auto">
-        <button
-          onClick={() => checkout.show({ amount: price * 100 })}
-          className="button"
-        >
-          Buy Now
-        </button>
         <button onClick={removeItemFromBasket} className="button">
           Remove From Basket
         </button>
