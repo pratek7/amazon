@@ -33,8 +33,8 @@ export default async (req, res) => {
       },
     ],
     mode: "payment",
-    success_url: `${process.env.HOST}?success=true`,
-    cancel_url: `${process.env.HOST}?canceled=true`,
+    success_url: `${process.env.HOST}/success`,
+    cancel_url: `${process.env.HOST}/canceled`,
     metadata: {
       email,
       images: JSON.stringify(items.map((item) => item.image)),
